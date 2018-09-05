@@ -3,3 +3,7 @@
 
 CMakeFiles/ThreadTest.dir/main.cpp.o: ../main.cpp
 
+CMakeFiles/ThreadTest.dir/web_serv.cpp.o: ../decl.h
+CMakeFiles/ThreadTest.dir/web_serv.cpp.o: ../web_serv.cpp
+CMakeFiles/ThreadTest.dir/web_serv.cpp.o: ../web_serv.h
+

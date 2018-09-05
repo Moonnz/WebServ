@@ -6,6 +6,38 @@
 
 #IncludeRegexTransform: 
 
+/root/CLionProjects/ThreadTest/decl.h
+thread
+-
+mutex
+-
+iostream
+-
+string
+-
+queue
+-
+chrono
+-
+sys/types.h
+-
+sys/socket.h
+-
+netinet/in.h
+-
+arpa/inet.h
+-
+stdio.h
+-
+stdlib.h
+-
+cstring
+-
+unistd.h
+-
+fcntl.h
+-
+
 /root/CLionProjects/ThreadTest/main.cpp
 thread
 -
@@ -37,4 +69,12 @@ unistd.h
 -
 fcntl.h
 -
+
+/root/CLionProjects/ThreadTest/web_serv.cpp
+web_serv.h
+/root/CLionProjects/ThreadTest/web_serv.h
+
+/root/CLionProjects/ThreadTest/web_serv.h
+decl.h
+/root/CLionProjects/ThreadTest/decl.h
 

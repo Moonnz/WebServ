@@ -3,3 +3,7 @@
 
 CMakeFiles/ThreadTest.dir/main.cpp.o
  /root/CLionProjects/ThreadTest/main.cpp
+CMakeFiles/ThreadTest.dir/web_serv.cpp.o
+ /root/CLionProjects/ThreadTest/decl.h
+ /root/CLionProjects/ThreadTest/web_serv.cpp
+ /root/CLionProjects/ThreadTest/web_serv.h

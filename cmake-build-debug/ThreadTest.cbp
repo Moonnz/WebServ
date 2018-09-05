@@ -84,7 +84,16 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/root/CLionProjects/ThreadTest/decl.h">
+			<Option target="ThreadTest"/>
+		</Unit>
 		<Unit filename="/root/CLionProjects/ThreadTest/main.cpp">
+			<Option target="ThreadTest"/>
+		</Unit>
+		<Unit filename="/root/CLionProjects/ThreadTest/web_serv.cpp">
+			<Option target="ThreadTest"/>
+		</Unit>
+		<Unit filename="/root/CLionProjects/ThreadTest/web_serv.h">
 			<Option target="ThreadTest"/>
 		</Unit>
 		<Unit filename="/root/CLionProjects/ThreadTest/CMakeLists.txt">

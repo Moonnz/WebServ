@@ -1,1 +1,1 @@
-/usr/bin/c++  -g   CMakeFiles/ThreadTest.dir/main.cpp.o  -o ThreadTest -lpthread 
+/usr/bin/c++  -g   CMakeFiles/ThreadTest.dir/main.cpp.o CMakeFiles/ThreadTest.dir/web_serv.cpp.o  -o ThreadTest -lpthread 

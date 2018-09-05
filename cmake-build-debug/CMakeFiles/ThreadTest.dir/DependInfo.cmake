@@ -5,6 +5,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
   "/root/CLionProjects/ThreadTest/main.cpp" "/root/CLionProjects/ThreadTest/cmake-build-debug/CMakeFiles/ThreadTest.dir/main.cpp.o"
+  "/root/CLionProjects/ThreadTest/web_serv.cpp" "/root/CLionProjects/ThreadTest/cmake-build-debug/CMakeFiles/ThreadTest.dir/web_serv.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

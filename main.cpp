@@ -25,7 +25,7 @@ const std::string red("\033[0;31m");
 const std::string reset("\033[0m");
 
 //Nombre de thread qui gérerons les connexions.
-#define __THREAD_NUMBER 5
+#define __THREAD_NUMBER 50
 //Taille des buffers des threads
 #define __BUFFER_SIZE 256
 
@@ -136,7 +136,8 @@ int main() {
             a.socket_list.push_back(temp);
             a.mut.unlock();
         }else{
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            std::this_thread::sleep_for(std::chrono::milliseconds(10));
+            std::cout << "sock = -1" << std::endl;
         }
     }
 

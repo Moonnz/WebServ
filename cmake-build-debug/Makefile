@@ -150,6 +150,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/ThreadTest.dir/build.make CMakeFiles/ThreadTest.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+web_serv.o: web_serv.cpp.o
+
+.PHONY : web_serv.o
+
+# target to build an object file
+web_serv.cpp.o:
+	$(MAKE) -f CMakeFiles/ThreadTest.dir/build.make CMakeFiles/ThreadTest.dir/web_serv.cpp.o
+.PHONY : web_serv.cpp.o
+
+web_serv.i: web_serv.cpp.i
+
+.PHONY : web_serv.i
+
+# target to preprocess a source file
+web_serv.cpp.i:
+	$(MAKE) -f CMakeFiles/ThreadTest.dir/build.make CMakeFiles/ThreadTest.dir/web_serv.cpp.i
+.PHONY : web_serv.cpp.i
+
+web_serv.s: web_serv.cpp.s
+
+.PHONY : web_serv.s
+
+# target to generate assembly for a file
+web_serv.cpp.s:
+	$(MAKE) -f CMakeFiles/ThreadTest.dir/build.make CMakeFiles/ThreadTest.dir/web_serv.cpp.s
+.PHONY : web_serv.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -162,6 +189,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... web_serv.o"
+	@echo "... web_serv.i"
+	@echo "... web_serv.s"
 .PHONY : help
 
 
