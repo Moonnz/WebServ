@@ -14,23 +14,28 @@
 #include <chrono>
 
 //Include pour le réseaux
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
+#if defined(linux)
+    #include <sys/types.h>
+    #include <sys/socket.h>
+    #include <netinet/in.h>
+    #include <arpa/inet.h>
+    #include <unistd.h>
+    typedef int SOCKET;
+    typedef struct sockaddr_in SOCKADDR_IN;
+    typedef struct sockaddr SOCKADDR;
+#elif defined(WIN32)
+    #include <winsock2.h>
+    typedef int socklen_t;
+#endif
 #include <stdio.h>
 #include <stdlib.h>
 #include <cstring>
-#include <unistd.h>
 #include <fcntl.h>
 
 //Nombre de thread qui gérerons les connexions.
-#define __THREAD_NUMBER 50
+#define __THREAD_NUMBER 1
 //Taille des buffers des threads
 #define __BUFFER_SIZE 256
-typedef int SOCKET;
-typedef struct sockaddr_in SOCKADDR_IN;
-typedef struct sockaddr SOCKADDR;
 
 
 struct container{
@@ -46,5 +51,6 @@ struct container_serv{
     socklen_t sock_serv_info_size;
     bool stop_serv;
     std::mutex mut;
+    bool stopped = false;
 };
 #endif //THREADTEST_DECL_H

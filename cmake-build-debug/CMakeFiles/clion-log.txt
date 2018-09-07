@@ -1,4 +1,4 @@
-/home/moonnz/Téléchargements/clion-2018.1.6/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /root/CLionProjects/ThreadTest
+C:\Users\Martin\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4129.51\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/CodeBlocks/mingw64/bin/make.exe -DCMAKE_C_COMPILER=C:/CodeBlocks/mingw64/bin/gcc.exe -DCMAKE_CXX_COMPILER=C:/CodeBlocks/mingw64/bin/g++.exe -G "CodeBlocks - MinGW Makefiles" C:\Users\Martin\CLionProjects\WebServ
 -- Configuring done
 -- Generating done
--- Build files have been written to: /root/CLionProjects/ThreadTest/cmake-build-debug
+-- Build files have been written to: C:/Users/Martin/CLionProjects/WebServ/cmake-build-debug

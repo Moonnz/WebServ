@@ -1,42 +1,9 @@
-//Include generaux et pour les thread
-#include <thread>
-#include <mutex>
-#include <iostream>
-#include <string>
-#include <queue>
-#include <chrono>
-
-//Include pour le réseaux
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <cstring>
 #include <unistd.h>
-#include <fcntl.h>
-
-typedef int SOCKET;
-typedef struct sockaddr_in SOCKADDR_IN;
-typedef struct sockaddr SOCKADDR;
-
-const std::string red("\033[0;31m");
-const std::string reset("\033[0m");
-
-//Nombre de thread qui gérerons les connexions.
-#define __THREAD_NUMBER 50
-//Taille des buffers des threads
-#define __BUFFER_SIZE 256
+#include "web_serv.h"
 
 //Structure contenant les données a partager.
 //Le mutex doit etres lock avant chaque intervention et unlock apres.
-struct container{
-    std::vector<std::string> v;
-    std::vector<SOCKET> socket_list; // Liste des socket actifs.
-    std::mutex mut; // Mutex de sécurité
-    bool stop; // Bool a changé pour arréter le serveur
-};
+
 
 //Fonction qui tournera en boucle sur chaque thread.
 void core_function(void * args){
@@ -44,7 +11,6 @@ void core_function(void * args){
     SOCKET socket_local;
     unsigned char buffer_local[__BUFFER_SIZE];
     memset(buffer_local, 0, 256);
-    ssize_t test;
     std::string request;
     bool boolean = false;
 
@@ -65,7 +31,7 @@ void core_function(void * args){
 
         for_here->mut.unlock(); // Je dévérouille la structure.
         if(socket_local != 0){
-            while( test = recv( socket_local, buffer_local, __BUFFER_SIZE, 0 ) > 0 ) {
+            while( recv( socket_local, (char *)buffer_local, sizeof(buffer_local), 0 ) > 0 ) {
                 request.append(reinterpret_cast<char *>(buffer_local));
                 for(int i = 0; i < __BUFFER_SIZE-3; i++)
                     if(buffer_local[i] == 13 && buffer_local[i+1] == 10 && buffer_local[i+2] == 13 && buffer_local[i+3] == 10){
@@ -78,7 +44,7 @@ void core_function(void * args){
                 memset(buffer_local, 0, 256);
             }
             std::cout << request << std::endl;
-            send(socket_local, "0", 1, NULL);
+            send(socket_local, "0", 1, 0);
             close(socket_local);
             socket_local = 0;
         }
@@ -89,6 +55,14 @@ void core_function(void * args){
 }
 
 int main() {
+    web_serv *aze = new web_serv();
+    sleep(11);
+    aze->stop();
+    //aze->stop();
+    /*#if defined(WIN32)
+        WSADATA WSAData;
+        int erreur = WSAStartup(MAKEWORD(2,2), &WSAData);
+    #endif
     //Déclaration des variables
     std::vector<std::thread> thread_list;
     container a;
@@ -114,8 +88,8 @@ int main() {
     sin.sin_family = AF_INET;
     sin.sin_port = htons(80);
     int optval = 1;
-    setsockopt( sock, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval) );
-    setsockopt( sock, SOL_SOCKET, SO_REUSEADDR, &optval, sizeof(optval) );
+    //setsockopt( sock, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval) );
+    setsockopt( sock, SOL_SOCKET, SO_REUSEADDR, (char*)&optval, sizeof(optval) );
 
     int sock_err = bind(sock, (SOCKADDR*)&sin, recsize);
 
@@ -127,8 +101,11 @@ int main() {
     if(sock_err == -1)
         exit(11);
 
-    fcntl(sock, F_SETFL, O_NONBLOCK);
-
+    #if defined(linux)
+        fcntl(sock, F_SETFL, O_NONBLOCK);
+    #elif defined(WIN32)
+        ioctlsocket(sock,FIONBIO,(unsigned long *)&optval);
+    #endif
     while(1){
         SOCKET temp = accept(sock, (SOCKADDR*)&csin, &crecsize);
         if(temp != -1){
@@ -146,6 +123,9 @@ int main() {
         thread_list.back().join();
         thread_list.pop_back();
     }
+    #if defined(WIN32)
+        WSACleanup();
+    #endif*/
 
     return 0;
 }

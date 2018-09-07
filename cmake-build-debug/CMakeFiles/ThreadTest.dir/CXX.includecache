@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/root/CLionProjects/ThreadTest/decl.h
+C:/Users/Martin/CLionProjects/WebServ/decl.h
 thread
 -
 mutex
@@ -27,37 +27,9 @@ netinet/in.h
 -
 arpa/inet.h
 -
-stdio.h
--
-stdlib.h
--
-cstring
--
 unistd.h
 -
-fcntl.h
--
-
-/root/CLionProjects/ThreadTest/main.cpp
-thread
--
-mutex
--
-iostream
--
-string
--
-queue
--
-chrono
--
-sys/types.h
--
-sys/socket.h
--
-netinet/in.h
--
-arpa/inet.h
+winsock2.h
 -
 stdio.h
 -
@@ -65,16 +37,14 @@ stdlib.h
 -
 cstring
 -
-unistd.h
--
 fcntl.h
 -
 
-/root/CLionProjects/ThreadTest/web_serv.cpp
+C:/Users/Martin/CLionProjects/WebServ/web_serv.cpp
 web_serv.h
-/root/CLionProjects/ThreadTest/web_serv.h
+C:/Users/Martin/CLionProjects/WebServ/web_serv.h
 
-/root/CLionProjects/ThreadTest/web_serv.h
+C:/Users/Martin/CLionProjects/WebServ/web_serv.h
 decl.h
-/root/CLionProjects/ThreadTest/decl.h
+C:/Users/Martin/CLionProjects/WebServ/decl.h
 
