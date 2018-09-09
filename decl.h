@@ -31,7 +31,8 @@
 #include <stdlib.h>
 #include <cstring>
 #include <fcntl.h>
-
+#include <unistd.h>
+#include <csignal>
 //Nombre de thread qui gérerons les connexions.
 #define __THREAD_NUMBER 1
 //Taille des buffers des threads
@@ -42,7 +43,7 @@ struct container{
     std::vector<std::thread> thread_list;
     std::vector<SOCKET> socket_list; // Liste des socket actifs.
     bool stop; // Bool a changé pour arréter le serveur
-    bool stop_thread;
+    bool stop_thread = false;
     std::mutex mut; // Mutex de sécurité
 };
 struct container_serv{

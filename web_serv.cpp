@@ -15,7 +15,9 @@ int web_serv::stop(){
     this->b.stop_serv = true;
     while(b.stopped != true){
         std::cout << "waiting for stop" << std::endl;
+        sleep(1);
     }
+    this->serv_thread->join();
     return 0;
 }
 
@@ -76,9 +78,6 @@ web_serv::web_serv() {
 void web_serv::serv_core_function(void *argOne, void *argTwo) {
     container *for_here = (container*)argOne; // Je récupére la structure
     container_serv *serv_for_here = (container_serv*)argTwo;
-    std::cout << "start pause" << std::endl;
-    std::this_thread::sleep_for(std::chrono::seconds(5));
-    std::cout << "stop pause" << std::endl;
     for_here->mut.lock();
     for_here->thread_list.resize(__THREAD_NUMBER);
     for_here->mut.unlock();
@@ -95,50 +94,69 @@ void web_serv::serv_core_function(void *argOne, void *argTwo) {
         serv_for_here->mut.lock();
         if(!serv_for_here->stop_serv){
             SOCKET temp = accept(serv_for_here->sock_serv, (SOCKADDR*)&serv_for_here->sock_serv_info, &serv_for_here->sock_serv_info_size);
-            if(temp != (unsigned int)-1){
+            if(temp != -1){
                 for_here->mut.lock();
                 for_here->socket_list.push_back(temp);
+                std::cout << "socket accepter et placé dans la liste" << std::endl;
                 for_here->mut.unlock();
             }
             serv_for_here->mut.unlock();
         }else{
             serv_for_here->mut.unlock();
             for_here->mut.lock();
+            std::cout << "stop thread set to true" << std::endl;
             for_here->stop_thread = true;
             for_here->mut.unlock();
-            for(std::vector<std::thread>::iterator i = for_here->thread_list.begin(); i != for_here->thread_list.end(); ++i){
-                i->join();
+            for(int i = 0; i < __THREAD_NUMBER; i++){
+                for_here->thread_list.back().join();
+                for_here->thread_list.pop_back();
             }
+            serv_for_here->mut.lock();
             serv_for_here->stopped = true;
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
+            serv_for_here->mut.unlock();
+            break;
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
     }
 }
 
 void web_serv::thread_core_function(void *args){
     container *for_here = (container*)args; // Je récupére la structure
-    SOCKET socket_local;
+    SOCKET socket_local = 0;
     unsigned char buffer_local[__BUFFER_SIZE];
     memset(buffer_local, 0, __BUFFER_SIZE);
     std::string request;
     bool boolean = false;
     std::cout << "thread ok1" << std::endl;
+
+    char crlf[4] = {13,10,13,10};
+
     while(1){ //Je lance la boucle infini
         for_here->mut.lock(); // Je verrouille la strucutre.
         if(for_here->socket_list.size() > 0){
             socket_local = for_here->socket_list.back();
             for_here->socket_list.pop_back(); // Et je le supprime de la liste.
+        }else{
+            socket_local = 0;
         }
 
-        if(for_here->stop == true){ // Je verifie au passage si il faut stoppé le thread.
+        if(for_here->stop_thread){ // Je verifie au passage si il faut stoppé le thread.
             std::cout << "thread stop" << std::endl;
             for_here->mut.unlock(); // Et je libere avant d'arréter.
+            std::cout << "thread_core break" << std::endl;
             break; // J'arréte la boucle donc le thread.
         }
 
         for_here->mut.unlock(); // Je dévérouille la structure.
         if(socket_local != 0){
-            while( recv( socket_local, (char *)buffer_local, __BUFFER_SIZE, 0 ) > 0 ) {
+            std::cout << "un socket valide a était récupérer" << std::endl;
+            boolean = false;
+            while(!boolean) {
+                int rec = recv( socket_local, (char *)buffer_local, __BUFFER_SIZE, 0 );
+                if(rec == -1){
+                    boolean = true;
+                    std::cout << WSAGetLastError() << std::endl;
+                }
                 request.append(reinterpret_cast<char *>(buffer_local));
                 for(int i = 0; i < __BUFFER_SIZE-3; i++){
                     if(buffer_local[i] == 13 && buffer_local[i+1] == 10 && buffer_local[i+2] == 13 && buffer_local[i+3] == 10){
@@ -146,16 +164,28 @@ void web_serv::thread_core_function(void *args){
                         break;
                     }
                 }
+                memset(buffer_local, 0, __BUFFER_SIZE);
                 if(boolean)
                     break;
-                memset(buffer_local, 0, __BUFFER_SIZE);
             }
-            std::cout << request << std::endl;
-            send(socket_local, "0", 1, 0);
+            std::vector<std::string> azerty = request_response::cut_by(request, "\r\n");
+            for(int cvb = 0; cvb < azerty.size(); cvb++){
+                std::cout << "###" << azerty[cvb] << std::endl;
+            }
+            std::cout << "try to send" << std::endl;
+            std::string body = "<html><body>0</body></html>";
+            std::string head;
+            head.append("HTTP/1.1 200 OK\r\nContent-Length: ");
+            head.append(std::to_string(body.length()));
+            head.append("\r\nContent-type: text/html\r\nConnection: Closed\r\n\r\n");
+            std::string a;
+            a.append(head.c_str()).append(body.c_str());
+            if(send(socket_local, a.c_str(), a.length(), 0) == -1)
+                std::cout << "error: " << WSAGetLastError() << std::endl;
+            std::cout << "try send end" << std::endl;
             close(socket_local);
             socket_local = 0;
-        }else{
-            std::this_thread::sleep_for(std::chrono::milliseconds(1));
         }
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 }

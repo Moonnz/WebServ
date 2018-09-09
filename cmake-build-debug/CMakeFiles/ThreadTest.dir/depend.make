@@ -3,9 +3,15 @@
 
 CMakeFiles/ThreadTest.dir/main.cpp.obj: ../decl.h
 CMakeFiles/ThreadTest.dir/main.cpp.obj: ../main.cpp
+CMakeFiles/ThreadTest.dir/main.cpp.obj: ../request_response.h
 CMakeFiles/ThreadTest.dir/main.cpp.obj: ../web_serv.h
 
+CMakeFiles/ThreadTest.dir/request_response.cpp.obj: ../decl.h
+CMakeFiles/ThreadTest.dir/request_response.cpp.obj: ../request_response.cpp
+CMakeFiles/ThreadTest.dir/request_response.cpp.obj: ../request_response.h
+
 CMakeFiles/ThreadTest.dir/web_serv.cpp.obj: ../decl.h
+CMakeFiles/ThreadTest.dir/web_serv.cpp.obj: ../request_response.h
 CMakeFiles/ThreadTest.dir/web_serv.cpp.obj: ../web_serv.cpp
 CMakeFiles/ThreadTest.dir/web_serv.cpp.obj: ../web_serv.h
 

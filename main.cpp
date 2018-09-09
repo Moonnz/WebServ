@@ -55,10 +55,11 @@ void core_function(void * args){
 }
 
 int main() {
-    web_serv *aze = new web_serv();
-    sleep(11);
+    web_serv *aze = new web_serv();;
+    std::cout << "Server start\n Enter anything to stop" << std::endl;
+    int a;
+    std::cin >> a;
     aze->stop();
-    //aze->stop();
     /*#if defined(WIN32)
         WSADATA WSAData;
         int erreur = WSAStartup(MAKEWORD(2,2), &WSAData);

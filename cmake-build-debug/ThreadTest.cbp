@@ -86,6 +86,12 @@
 		<Unit filename="C:/Users/Martin/CLionProjects/WebServ/main.cpp">
 			<Option target="ThreadTest"/>
 		</Unit>
+		<Unit filename="C:/Users/Martin/CLionProjects/WebServ/request_response.cpp">
+			<Option target="ThreadTest"/>
+		</Unit>
+		<Unit filename="C:/Users/Martin/CLionProjects/WebServ/request_response.h">
+			<Option target="ThreadTest"/>
+		</Unit>
 		<Unit filename="C:/Users/Martin/CLionProjects/WebServ/web_serv.cpp">
 			<Option target="ThreadTest"/>
 		</Unit>

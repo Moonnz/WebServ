@@ -4,8 +4,14 @@
 CMakeFiles/ThreadTest.dir/main.cpp.obj
  C:/Users/Martin/CLionProjects/WebServ/decl.h
  C:/Users/Martin/CLionProjects/WebServ/main.cpp
+ C:/Users/Martin/CLionProjects/WebServ/request_response.h
  C:/Users/Martin/CLionProjects/WebServ/web_serv.h
+CMakeFiles/ThreadTest.dir/request_response.cpp.obj
+ C:/Users/Martin/CLionProjects/WebServ/decl.h
+ C:/Users/Martin/CLionProjects/WebServ/request_response.cpp
+ C:/Users/Martin/CLionProjects/WebServ/request_response.h
 CMakeFiles/ThreadTest.dir/web_serv.cpp.obj
  C:/Users/Martin/CLionProjects/WebServ/decl.h
+ C:/Users/Martin/CLionProjects/WebServ/request_response.h
  C:/Users/Martin/CLionProjects/WebServ/web_serv.cpp
  C:/Users/Martin/CLionProjects/WebServ/web_serv.h

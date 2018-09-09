@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/ThreadTest.dir/main.cpp.obj"
   "CMakeFiles/ThreadTest.dir/web_serv.cpp.obj"
+  "CMakeFiles/ThreadTest.dir/request_response.cpp.obj"
   "ThreadTest.pdb"
   "ThreadTest.exe"
   "ThreadTest.exe.manifest"

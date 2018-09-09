@@ -149,6 +149,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles\ThreadTest.dir\build.make CMakeFiles/ThreadTest.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+request_response.obj: request_response.cpp.obj
+
+.PHONY : request_response.obj
+
+# target to build an object file
+request_response.cpp.obj:
+	$(MAKE) -f CMakeFiles\ThreadTest.dir\build.make CMakeFiles/ThreadTest.dir/request_response.cpp.obj
+.PHONY : request_response.cpp.obj
+
+request_response.i: request_response.cpp.i
+
+.PHONY : request_response.i
+
+# target to preprocess a source file
+request_response.cpp.i:
+	$(MAKE) -f CMakeFiles\ThreadTest.dir\build.make CMakeFiles/ThreadTest.dir/request_response.cpp.i
+.PHONY : request_response.cpp.i
+
+request_response.s: request_response.cpp.s
+
+.PHONY : request_response.s
+
+# target to generate assembly for a file
+request_response.cpp.s:
+	$(MAKE) -f CMakeFiles\ThreadTest.dir\build.make CMakeFiles/ThreadTest.dir/request_response.cpp.s
+.PHONY : request_response.cpp.s
+
 web_serv.obj: web_serv.cpp.obj
 
 .PHONY : web_serv.obj
@@ -188,6 +215,9 @@ help:
 	@echo ... main.obj
 	@echo ... main.i
 	@echo ... main.s
+	@echo ... request_response.obj
+	@echo ... request_response.i
+	@echo ... request_response.s
 	@echo ... web_serv.obj
 	@echo ... web_serv.i
 	@echo ... web_serv.s
