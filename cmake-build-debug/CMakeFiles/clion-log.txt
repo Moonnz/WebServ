@@ -1,4 +1,27 @@
-C:\Users\Martin\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4129.51\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/CodeBlocks/mingw64/bin/make.exe -DCMAKE_C_COMPILER=C:/CodeBlocks/mingw64/bin/gcc.exe -DCMAKE_CXX_COMPILER=C:/CodeBlocks/mingw64/bin/g++.exe -G "CodeBlocks - MinGW Makefiles" C:\Users\Martin\CLionProjects\WebServ
+/home/moonnz/Téléchargements/clion-2018.1.6/bin/cmake/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /root/CLionProjects/ThreadTest
+-- The C compiler identification is GNU 7.3.0
+-- The CXX compiler identification is GNU 7.3.0
+-- Check for working C compiler: /usr/bin/cc
+-- Check for working C compiler: /usr/bin/cc -- works
+-- Detecting C compiler ABI info
+-- Detecting C compiler ABI info - done
+-- Detecting C compile features
+-- Detecting C compile features - done
+-- Check for working CXX compiler: /usr/bin/c++
+-- Check for working CXX compiler: /usr/bin/c++ -- works
+-- Detecting CXX compiler ABI info
+-- Detecting CXX compiler ABI info - done
+-- Detecting CXX compile features
+-- Detecting CXX compile features - done
+-- Looking for pthread.h
+-- Looking for pthread.h - found
+-- Looking for pthread_create
+-- Looking for pthread_create - not found
+-- Looking for pthread_create in pthreads
+-- Looking for pthread_create in pthreads - not found
+-- Looking for pthread_create in pthread
+-- Looking for pthread_create in pthread - found
+-- Found Threads: TRUE  
 -- Configuring done
 -- Generating done
--- Build files have been written to: C:/Users/Martin/CLionProjects/WebServ/cmake-build-debug
+-- Build files have been written to: /root/CLionProjects/ThreadTest/cmake-build-debug

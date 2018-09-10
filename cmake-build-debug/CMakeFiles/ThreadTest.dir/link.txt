@@ -1,3 +1,1 @@
-C:\Users\Martin\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\182.4129.51\bin\cmake\win\bin\cmake.exe -E remove -f CMakeFiles\ThreadTest.dir/objects.a
-C:\CodeBlocks\mingw64\bin\ar.exe cr CMakeFiles\ThreadTest.dir/objects.a @CMakeFiles\ThreadTest.dir\objects1.rsp
-C:\CodeBlocks\mingw64\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\ThreadTest.dir/objects.a -Wl,--no-whole-archive  -o ThreadTest.exe -Wl,--out-implib,libThreadTest.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\ThreadTest.dir\linklibs.rsp
+/usr/bin/c++  -g   CMakeFiles/ThreadTest.dir/main.cpp.o CMakeFiles/ThreadTest.dir/web_serv.cpp.o CMakeFiles/ThreadTest.dir/request_response.cpp.o  -o ThreadTest -lpthread 

@@ -22,6 +22,7 @@ int web_serv::stop(){
 }
 
 web_serv::web_serv() {
+    int erreur = 0;
     #if defined(WIN32)
     WSADATA WSAData;
     int erreur = WSAStartup(MAKEWORD(2,2), &WSAData);
@@ -36,14 +37,11 @@ web_serv::web_serv() {
     sin.sin_addr.s_addr = htonl(INADDR_ANY);
     sin.sin_family = AF_INET;
     sin.sin_port = htons(80);
-    std::cout << " 10" << std::endl;
     int optval = 1;
     //setsockopt( sock, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval) );
     setsockopt( sock, SOL_SOCKET, SO_REUSEADDR, (char *)&optval, sizeof(optval) );
-    std::cout << " 11" << std::endl;
 
     int sock_err = bind(sock, (SOCKADDR*)&sin, recsize);
-    std::cout << " 11" << std::endl;
 
     if(sock_err == -1){
         std::cout << "bind" << std::endl;
@@ -97,7 +95,6 @@ void web_serv::serv_core_function(void *argOne, void *argTwo) {
             if(temp != -1){
                 for_here->mut.lock();
                 for_here->socket_list.push_back(temp);
-                std::cout << "socket accepter et placé dans la liste" << std::endl;
                 for_here->mut.unlock();
             }
             serv_for_here->mut.unlock();
@@ -127,7 +124,6 @@ void web_serv::thread_core_function(void *args){
     memset(buffer_local, 0, __BUFFER_SIZE);
     std::string request;
     bool boolean = false;
-    std::cout << "thread ok1" << std::endl;
 
     char crlf[4] = {13,10,13,10};
 
@@ -143,19 +139,19 @@ void web_serv::thread_core_function(void *args){
         if(for_here->stop_thread){ // Je verifie au passage si il faut stoppé le thread.
             std::cout << "thread stop" << std::endl;
             for_here->mut.unlock(); // Et je libere avant d'arréter.
-            std::cout << "thread_core break" << std::endl;
             break; // J'arréte la boucle donc le thread.
         }
 
         for_here->mut.unlock(); // Je dévérouille la structure.
         if(socket_local != 0){
-            std::cout << "un socket valide a était récupérer" << std::endl;
             boolean = false;
             while(!boolean) {
                 int rec = recv( socket_local, (char *)buffer_local, __BUFFER_SIZE, 0 );
                 if(rec == -1){
                     boolean = true;
+                    #if defined(WIN32)
                     std::cout << WSAGetLastError() << std::endl;
+                    #endif
                 }
                 request.append(reinterpret_cast<char *>(buffer_local));
                 for(int i = 0; i < __BUFFER_SIZE-3; i++){
@@ -169,10 +165,6 @@ void web_serv::thread_core_function(void *args){
                     break;
             }
             std::vector<std::string> azerty = request_response::cut_by(request, "\r\n");
-            for(int cvb = 0; cvb < azerty.size(); cvb++){
-                std::cout << "###" << azerty[cvb] << std::endl;
-            }
-            std::cout << "try to send" << std::endl;
             std::string body = "<html><body>0</body></html>";
             std::string head;
             head.append("HTTP/1.1 200 OK\r\nContent-Length: ");
@@ -180,9 +172,16 @@ void web_serv::thread_core_function(void *args){
             head.append("\r\nContent-type: text/html\r\nConnection: Closed\r\n\r\n");
             std::string a;
             a.append(head.c_str()).append(body.c_str());
-            if(send(socket_local, a.c_str(), a.length(), 0) == -1)
-                std::cout << "error: " << WSAGetLastError() << std::endl;
-            std::cout << "try send end" << std::endl;
+            request_response *req_resp = new request_response(request);
+
+            if(send(socket_local, a.c_str(), a.length(), 0) == -1){
+                #if defined(WIN32)
+                std::cout << WSAGetLastError() << std::endl;
+                #elif defined(linux)
+                std::cout << errno << std::endl;
+                #endif
+
+            }
             close(socket_local);
             socket_local = 0;
         }
