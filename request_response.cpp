@@ -44,10 +44,12 @@ std::string request_response::retrieve_file_data(std::string _filename){
         std::ifstream file;
         file.open(filename);
         if(file.good()){
-            file.seekg(std::ios_base::end);
-            int size = file.peek();
-            file.seekg(std::ios_base::beg);
-
+            file.seekg(0, file.end);
+            int size = file.tellg();
+            file.seekg(0, file.beg);
+            char * buf = new char[size];
+            file.read(buf, size);
+            return std::string(buf);
         }
     }
     
