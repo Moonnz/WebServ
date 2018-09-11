@@ -124,6 +124,7 @@ void web_serv::thread_core_function(void *args){
     memset(buffer_local, 0, __BUFFER_SIZE);
     std::string request;
     bool boolean = false;
+    request_response *req_resp;
 
     char crlf[4] = {13,10,13,10};
 
@@ -172,7 +173,7 @@ void web_serv::thread_core_function(void *args){
             head.append("\r\nContent-type: text/html\r\nConnection: Closed\r\n\r\n");
             std::string a;
             a.append(head.c_str()).append(body.c_str());
-            request_response *req_resp = new request_response(request);
+            req_resp = new request_response(request);
 
             if(send(socket_local, a.c_str(), a.length(), 0) == -1){
                 #if defined(WIN32)

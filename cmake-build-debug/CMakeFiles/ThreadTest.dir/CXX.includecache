@@ -19,6 +19,8 @@ queue
 -
 chrono
 -
+fstream
+-
 sys/types.h
 -
 sys/socket.h
@@ -44,12 +46,6 @@ unistd.h
 csignal
 -
 
-/root/CLionProjects/ThreadTest/main.cpp
-unistd.h
--
-web_serv.h
-/root/CLionProjects/ThreadTest/web_serv.h
-
 /root/CLionProjects/ThreadTest/request_response.cpp
 request_response.h
 /root/CLionProjects/ThreadTest/request_response.h
@@ -57,14 +53,4 @@ request_response.h
 /root/CLionProjects/ThreadTest/request_response.h
 decl.h
 /root/CLionProjects/ThreadTest/decl.h
-
-/root/CLionProjects/ThreadTest/web_serv.cpp
-web_serv.h
-/root/CLionProjects/ThreadTest/web_serv.h
-
-/root/CLionProjects/ThreadTest/web_serv.h
-decl.h
-/root/CLionProjects/ThreadTest/decl.h
-request_response.h
-/root/CLionProjects/ThreadTest/request_response.h
 

@@ -10,6 +10,10 @@ class request_response {
 public:
     request_response(std::string);
     static std::vector<std::string> cut_by(std::string, std::string);
+    std::string get_filename(std::string);
+    std::string retrieve_file_data(std::string);
+private:
+    std::vector<std::string> lines;
 
 };
 

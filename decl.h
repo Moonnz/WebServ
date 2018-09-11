@@ -12,6 +12,7 @@
 #include <string>
 #include <queue>
 #include <chrono>
+#include <fstream>
 
 //Include pour le réseaux
 #if defined(linux)
