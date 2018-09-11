@@ -1,6 +1,5 @@
 #include <unistd.h>
 #include "web_serv.h"
-
 //Structure contenant les données a partager.
 //Le mutex doit etres lock avant chaque intervention et unlock apres.
 
@@ -55,7 +54,11 @@ void core_function(void * args){
 }
 
 int main() {
-    web_serv *aze = new web_serv();;
+    /*auto start = std::chrono::steady_clock::now();
+    auto end = std::chrono::steady_clock::now();
+    auto diff = end - start;
+    std::cout << std::chrono::duration <double, std::milli> (diff).count() << " ms" << std::endl;*/
+    web_serv *aze = new web_serv();
     std::cout << "Server start\n Enter anything to stop" << std::endl;
     int a;
     std::cin >> a;

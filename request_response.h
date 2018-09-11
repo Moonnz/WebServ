@@ -9,12 +9,17 @@
 class request_response {
 public:
     request_response(std::string);
-    static std::vector<std::string> cut_by(std::string, std::string);
+    std::vector<std::string> cut_by(std::string, std::string);
     std::string get_filename(std::string);
-    std::string retrieve_file_data(std::string);
-    static inline bool file_exist(std::string);
+    int retrieve_file_data(std::string);
+    inline bool file_exist(std::string);
+    std::string get_response();
 private:
     std::vector<std::string> lines;
+    std::string file_content = "";
+    std::string head = "";
+    int error = 0;
+    int file_size = 0;
 
 };
 

@@ -37,12 +37,12 @@
 #include <unistd.h>
 #include <csignal>
 //Nombre de thread qui gérerons les connexions.
-#define __THREAD_NUMBER 1
+#define __THREAD_NUMBER 10
 //Taille des buffers des threads
 #define __BUFFER_SIZE 256
 //Chemin vers le dossier contenant les fichiers a envoyer
 #if defined(WIN32)
-    #define __FILE_PATH "C:\\Users\\Martin\\Document\\temporaire"
+    #define __FILE_PATH "C:\\Users\\Martin\\Documents\\temporaire"
 #elif defined(linux)
     #define __FILE_PATH "/home/moonnz/temporaire/"
 #endif

@@ -113,7 +113,7 @@ void web_serv::serv_core_function(void *argOne, void *argTwo) {
             serv_for_here->mut.unlock();
             break;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
 
@@ -165,17 +165,9 @@ void web_serv::thread_core_function(void *args){
                 if(boolean)
                     break;
             }
-            std::vector<std::string> azerty = request_response::cut_by(request, "\r\n");
-            std::string body = "<html><body>0</body></html>";
-            std::string head;
-            head.append("HTTP/1.1 200 OK\r\nContent-Length: ");
-            head.append(std::to_string(body.length()));
-            head.append("\r\nContent-type: text/html\r\nConnection: Closed\r\n\r\n");
-            std::string a;
-            a.append(head.c_str()).append(body.c_str());
             req_resp = new request_response(request);
-
-            if(send(socket_local, a.c_str(), a.length(), 0) == -1){
+            std::string r = req_resp->get_response();
+            if(send(socket_local, r.c_str(), r.length(), 0) == -1){
                 #if defined(WIN32)
                 std::cout << WSAGetLastError() << std::endl;
                 #elif defined(linux)
@@ -185,7 +177,10 @@ void web_serv::thread_core_function(void *args){
             }
             close(socket_local);
             socket_local = 0;
+            delete(req_resp);
+            r ="";
+            request = "";
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
