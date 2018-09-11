@@ -14,6 +14,8 @@
 #include <chrono>
 #include <fstream>
 
+#include <sys/stat.h>
+
 //Include pour le réseaux
 #if defined(linux)
     #include <sys/types.h>
@@ -38,8 +40,12 @@
 #define __THREAD_NUMBER 1
 //Taille des buffers des threads
 #define __BUFFER_SIZE 256
-
-
+//Chemin vers le dossier contenant les fichiers a envoyer
+#if defined(WIN32)
+    #define __FILE_PATH "C:\\Users\\Martin\\Document\\temporaire"
+#elif defined(linux)
+    #define __PATH "/home/moonnz/temporaire/"
+#endif
 struct container{
     std::vector<std::thread> thread_list;
     std::vector<SOCKET> socket_list; // Liste des socket actifs.

@@ -25,7 +25,7 @@ web_serv::web_serv() {
     int erreur = 0;
     #if defined(WIN32)
     WSADATA WSAData;
-    int erreur = WSAStartup(MAKEWORD(2,2), &WSAData);
+    erreur = WSAStartup(MAKEWORD(2,2), &WSAData);
     #endif
     std::cout << erreur << " startup" << std::endl;
 

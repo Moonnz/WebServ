@@ -60,73 +60,7 @@ int main() {
     int a;
     std::cin >> a;
     aze->stop();
-    /*#if defined(WIN32)
-        WSADATA WSAData;
-        int erreur = WSAStartup(MAKEWORD(2,2), &WSAData);
-    #endif
-    //Déclaration des variables
-    std::vector<std::thread> thread_list;
-    container a;
-    a.stop = false;
 
-    //INFORMATION SERVEUR
-    SOCKADDR_IN sin;
-    SOCKET sock;
-    socklen_t recsize = sizeof(sin);
-
-    //INFORMATION SOCKET TEMP
-    SOCKADDR_IN csin;
-    SOCKET csock;
-    socklen_t crecsize = sizeof(csin);
-
-    thread_list.resize(__THREAD_NUMBER);
-    for(int i = 0; i < __THREAD_NUMBER; i++){
-        thread_list.push_back(std::thread(core_function, (void *)&a));
-    }
-
-    sock = socket(AF_INET, SOCK_STREAM, 0);
-    sin.sin_addr.s_addr = htonl(INADDR_ANY);
-    sin.sin_family = AF_INET;
-    sin.sin_port = htons(80);
-    int optval = 1;
-    //setsockopt( sock, SOL_SOCKET, SO_REUSEPORT, &optval, sizeof(optval) );
-    setsockopt( sock, SOL_SOCKET, SO_REUSEADDR, (char*)&optval, sizeof(optval) );
-
-    int sock_err = bind(sock, (SOCKADDR*)&sin, recsize);
-
-    if(sock_err == -1)
-        exit(10);
-
-    sock_err = listen(sock, 5);
-
-    if(sock_err == -1)
-        exit(11);
-
-    #if defined(linux)
-        fcntl(sock, F_SETFL, O_NONBLOCK);
-    #elif defined(WIN32)
-        ioctlsocket(sock,FIONBIO,(unsigned long *)&optval);
-    #endif
-    while(1){
-        SOCKET temp = accept(sock, (SOCKADDR*)&csin, &crecsize);
-        if(temp != -1){
-            a.mut.lock();
-            a.socket_list.push_back(temp);
-            a.mut.unlock();
-        }else{
-            std::this_thread::sleep_for(std::chrono::milliseconds(10));
-            std::cout << "sock = -1" << std::endl;
-        }
-    }
-
-    //
-    for(int i = 0; i < __THREAD_NUMBER; i++){
-        thread_list.back().join();
-        thread_list.pop_back();
-    }
-    #if defined(WIN32)
-        WSACleanup();
-    #endif*/
 
     return 0;
 }

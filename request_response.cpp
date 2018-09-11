@@ -36,8 +36,24 @@ std::string request_response::get_filename(std::string request){
 
 }
 
-std::string request_response::retrieve_file_data(std::string filename){
-    std::ifstream file;
-    file.open(filename);
+std::string request_response::retrieve_file_data(std::string _filename){
+    std::string filename = __FILE_PATH;
+    filename.append("\\");
+    filename.append(_filename);
+    if(file_exist(filename)){
+        std::ifstream file;
+        file.open(filename);
+        if(file.good()){
+            file.seekg(std::ios_base::end);
+            int size = file.peek();
+            file.seekg(std::ios_base::beg);
+
+        }
+    }
     
+}
+
+bool request_response::file_exist(std::string filename) {
+    struct stat buffer;
+    return (stat ( filename.c_str(), &buffer) == 0);
 }

@@ -1,9 +1,11 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/ThreadTest.dir/main.cpp.o"
-  "CMakeFiles/ThreadTest.dir/web_serv.cpp.o"
-  "CMakeFiles/ThreadTest.dir/request_response.cpp.o"
+  "CMakeFiles/ThreadTest.dir/main.cpp.obj"
+  "CMakeFiles/ThreadTest.dir/web_serv.cpp.obj"
+  "CMakeFiles/ThreadTest.dir/request_response.cpp.obj"
   "ThreadTest.pdb"
-  "ThreadTest"
+  "ThreadTest.exe"
+  "ThreadTest.exe.manifest"
+  "libThreadTest.dll.a"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/root/CLionProjects/ThreadTest/decl.h
+C:/Users/Martin/CLionProjects/WebServ/decl.h
 thread
 -
 mutex
@@ -20,6 +20,8 @@ queue
 chrono
 -
 fstream
+-
+sys/stat.h
 -
 sys/types.h
 -
@@ -46,11 +48,11 @@ unistd.h
 csignal
 -
 
-/root/CLionProjects/ThreadTest/request_response.cpp
+C:/Users/Martin/CLionProjects/WebServ/request_response.cpp
 request_response.h
-/root/CLionProjects/ThreadTest/request_response.h
+C:/Users/Martin/CLionProjects/WebServ/request_response.h
 
-/root/CLionProjects/ThreadTest/request_response.h
+C:/Users/Martin/CLionProjects/WebServ/request_response.h
 decl.h
-/root/CLionProjects/ThreadTest/decl.h
+C:/Users/Martin/CLionProjects/WebServ/decl.h
 
