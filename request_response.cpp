@@ -7,21 +7,29 @@
 request_response::request_response(std::string request) {
     lines = cut_by(request, "\r\n");
     error  = retrieve_file_data(get_filename(request));
-    if(error == 0){
-        head.append("HTTP/1.1 200 OK\r\nContent-Length: ");
-        head.append(std::to_string(file_size));
-        head.append("\r\nContent-type: text/html\r\nConnection: Closed\r\n\r\n");
-    }else if(error == 5 || error == 10){
-        head.append("HTTP/1.1 400 OK\r\nContent-Length: 0");
-        head.append("\r\nConnection: Closed\r\n\r\n");
-    }
     
     for(std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); it++){
         std::size_t found = it->find("Connection: ");
         if(found != std::string::npos){
-            if(it->substr(12, it->length()) == " Keep-Alive")
+            if(it->substr(12, it->length()) == " Keep-Alive" && error != 5 && error != 10 ){
                 keep_alive = true;
+                std::cout << "keep-alive enable" << std::endl;
+            }
         }
+    }
+    
+    if(error == 0){
+        head.append("HTTP/1.1 200 OK\r\nContent-Length: ");
+        head.append(std::to_string(file_size));
+        head.append("\r\nContent-type: text/html\r\n");
+        if(keep_alive){
+            head.append("Connection: Keep-Alive\r\nKeep-Alive: timeout=1\r\n\r\n");
+        }else{
+            head.append("Connection: Closed\r\n\r\n");
+        }
+    }else if(error == 5 || error == 10){
+        head.append("HTTP/1.1 404 Not Found\r\nContent-Length: 0");
+        head.append("\r\nConnection: Closed\r\n\r\n");
     }
 }
 
@@ -67,7 +75,11 @@ std::string request_response::get_filename(std::string request){
 
 int request_response::retrieve_file_data(std::string _filename){
     std::string filename = __FILE_PATH;
-    filename.append("\\");
+    #if defined(WIN32)
+        filename.append("\\");
+    #else
+        filename.append("/");
+    #endif
     filename.append(_filename);
     if(file_exist(filename)){
         std::ifstream file(filename, std::ifstream::binary);

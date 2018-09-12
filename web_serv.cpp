@@ -125,6 +125,8 @@ void web_serv::thread_core_function(void *args){
     request_response *req_resp;
     std::chrono::time_point<std::chrono::system_clock> start;
     bool keep_alive = false;
+    bool close_for_timeout = false;
+    int rec;
 
     char crlf[4] = {13,10,13,10};
 
@@ -150,58 +152,84 @@ void web_serv::thread_core_function(void *args){
         if(socket_local != 0){
             boolean = false;
             while(!boolean) {
-                int rec = recv( socket_local, (char *)buffer_local, __BUFFER_SIZE, 0 );
+                if(keep_alive){
+                    std::cout << "before receive" << std::endl;
+                    //std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+                }
+                rec = recv( socket_local, (char *)buffer_local, __BUFFER_SIZE, 0 );
+                std::cout << "rec: " << rec << std::endl;
+                
+                //
+                
                 if(rec == -1){
                     boolean = true;
                     #if defined(WIN32)
                     std::cout << WSAGetLastError() << std::endl;
                     #endif
-                }
-                request.append(reinterpret_cast<char *>(buffer_local));
-                for(int i = 0; i < __BUFFER_SIZE-3; i++){
-                    if(buffer_local[i] == 13 && buffer_local[i+1] == 10 && buffer_local[i+2] == 13 && buffer_local[i+3] == 10){
-                        boolean = true;
-                        break;
+                }else if(rec > 0){
+                    request.append(reinterpret_cast<char *>(buffer_local));
+                    for(int i = 0; i < __BUFFER_SIZE-3; i++){
+                        if(buffer_local[i] == 13 && buffer_local[i+1] == 10 && buffer_local[i+2] == 13 && buffer_local[i+3] == 10){
+                            boolean = true;
+                            break;
+                        }
                     }
+                    memset(buffer_local, 0, __BUFFER_SIZE);
+                }else{
+                    boolean = true;
                 }
-                memset(buffer_local, 0, __BUFFER_SIZE);
+                
                 if(boolean)
                     break;
             }
-            req_resp = new request_response(request);
-            std::string r = req_resp->get_response();
-            if(send(socket_local, r.c_str(), r.length(), 0) == -1){
-                #if defined(WIN32)
-                std::cout << WSAGetLastError() << std::endl;
-                #elif defined(linux)
-                std::cout << errno << std::endl;
-                #endif
-
-            }
-            
+            std::string r;
+            if(rec > 0){
+                req_resp = new request_response(request);
+                 r = req_resp->get_response();
+                if(send(socket_local, r.c_str(), r.length(), 0) == -1){
+                    #if defined(WIN32)
+                    std::cout << WSAGetLastError() << std::endl;
+                    #elif defined(linux)
+                    std::cout << errno << std::endl;
+                    #endif
+                }
+            }   
+            std::cout << "avant le if: " << keep_alive << std::endl; 
             if(keep_alive){
                 std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
-                std::chrono::duration<std::chrono::seconds> diff = end-start;
-                std::chrono::seconds sec(1);
-                //if()
-                    bool close = true;
+                long int diff = std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count();
+                std::cout << "timeout: " << diff << std::endl;
+                if(diff > 1000000000)
+                    close_for_timeout = true;
             }
-            if(close){
+            if(close_for_timeout){
+                std::cout << "closing for timeout" << std::endl;
                 close(socket_local);
                 socket_local = 0;
                 delete(req_resp);
                 r ="";
                 request = "";
+                keep_alive = false;
+                close_for_timeout = false;
+                start = std::chrono::time_point<std::chrono:system_clock>;
             }else{
-                keep_alive = req_resp->keep_alive;
                 if(!keep_alive){
-                    close(socket_local);
-                    socket_local = 0;
-                    delete(req_resp);
-                    r ="";
-                    request = "";
-            }else
-                std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
+                    keep_alive = req_resp->keep_alive;
+                    if(!keep_alive){
+                            std::cout <<  "closing because no keep-alive" << std::endl;
+                            close(socket_local);
+                            socket_local = 0;
+                            delete(req_resp);
+                            r ="";
+                            request = "";
+                            keep_alive = false;
+                            close_for_timeout = false;
+                            start = std::chrono::time_point<std::chrono::system_clock>;
+                    }else{
+                        std::cout << "keep_alive: " << keep_alive <<std::endl;
+                        start = std::chrono::system_clock::now();
+                    }
+                }
             }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
