@@ -13,6 +13,7 @@
 #include <queue>
 #include <chrono>
 #include <fstream>
+#include <algorithm>
 
 #include <sys/stat.h>
 
@@ -37,7 +38,7 @@
 #include <unistd.h>
 #include <csignal>
 //Nombre de thread qui gérerons les connexions.
-#define __THREAD_NUMBER 10
+#define __THREAD_NUMBER 1
 //Taille des buffers des threads
 #define __BUFFER_SIZE 256
 //Chemin vers le dossier contenant les fichiers a envoyer

@@ -21,6 +21,8 @@ chrono
 -
 fstream
 -
+algorithm
+-
 sys/stat.h
 -
 sys/types.h
@@ -48,17 +50,11 @@ unistd.h
 csignal
 -
 
-C:/Users/Martin/CLionProjects/WebServ/request_response.h
-decl.h
-C:/Users/Martin/CLionProjects/WebServ/decl.h
-
-C:/Users/Martin/CLionProjects/WebServ/web_serv.cpp
-web_serv.h
-C:/Users/Martin/CLionProjects/WebServ/web_serv.h
-
-C:/Users/Martin/CLionProjects/WebServ/web_serv.h
-decl.h
-C:/Users/Martin/CLionProjects/WebServ/decl.h
+C:/Users/Martin/CLionProjects/WebServ/request_response.cpp
 request_response.h
 C:/Users/Martin/CLionProjects/WebServ/request_response.h
+
+C:/Users/Martin/CLionProjects/WebServ/request_response.h
+decl.h
+C:/Users/Martin/CLionProjects/WebServ/decl.h
 
