@@ -15,7 +15,14 @@ request_response::request_response(std::string request) {
         head.append("HTTP/1.1 400 OK\r\nContent-Length: 0");
         head.append("\r\nConnection: Closed\r\n\r\n");
     }
-    std::cout << get_filename(request) << std::endl;
+    
+    for(std::vector<std::string>::iterator it = lines.begin(); it != lines.end(); it++){
+        std::size_t found = it->find("Connection: ");
+        if(found != std::string::npos){
+            if(it->substr(12, it->length()) == " Keep-Alive")
+                keep_alive = true;
+        }
+    }
 }
 
 std::string request_response::get_response() {

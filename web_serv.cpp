@@ -13,9 +13,7 @@ web_serv::~web_serv() {
 
 int web_serv::stop(){
     this->b.stop_serv = true;
-    while(b.stopped != true){
-        std::cout << "waiting for stop" << std::endl;
-        sleep(1);
+    while(b.stopped != true){        
     }
     this->serv_thread->join();
     return 0;
@@ -125,25 +123,30 @@ void web_serv::thread_core_function(void *args){
     std::string request;
     bool boolean = false;
     request_response *req_resp;
+    std::chrono::time_point<std::chrono::system_clock> start;
+    bool keep_alive = false;
 
     char crlf[4] = {13,10,13,10};
 
     while(1){ //Je lance la boucle infini
-        for_here->mut.lock(); // Je verrouille la strucutre.
-        if(for_here->socket_list.size() > 0){
-            socket_local = for_here->socket_list.back();
-            for_here->socket_list.pop_back(); // Et je le supprime de la liste.
-        }else{
-            socket_local = 0;
+        if(!keep_alive){
+            for_here->mut.lock(); // Je verrouille la strucutre.
+            if(for_here->socket_list.size() > 0){
+                socket_local = for_here->socket_list.back();
+                for_here->socket_list.pop_back(); // Et je le supprime de la liste.
+            }else{
+                socket_local = 0;
+            }
+    
+            if(for_here->stop_thread){ // Je verifie au passage si il faut stoppé le thread.
+                std::cout << "thread stop" << std::endl;
+                for_here->mut.unlock(); // Et je libere avant d'arréter.
+                break; // J'arréte la boucle donc le thread.
+            }
+    
+            for_here->mut.unlock(); // Je dévérouille la structure.
         }
-
-        if(for_here->stop_thread){ // Je verifie au passage si il faut stoppé le thread.
-            std::cout << "thread stop" << std::endl;
-            for_here->mut.unlock(); // Et je libere avant d'arréter.
-            break; // J'arréte la boucle donc le thread.
-        }
-
-        for_here->mut.unlock(); // Je dévérouille la structure.
+        
         if(socket_local != 0){
             boolean = false;
             while(!boolean) {
@@ -175,11 +178,31 @@ void web_serv::thread_core_function(void *args){
                 #endif
 
             }
-            close(socket_local);
-            socket_local = 0;
-            delete(req_resp);
-            r ="";
-            request = "";
+            
+            if(keep_alive){
+                std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
+                std::chrono::duration<std::chrono::seconds> diff = end-start;
+                std::chrono::seconds sec(1);
+                //if()
+                    bool close = true;
+            }
+            if(close){
+                close(socket_local);
+                socket_local = 0;
+                delete(req_resp);
+                r ="";
+                request = "";
+            }else{
+                keep_alive = req_resp->keep_alive;
+                if(!keep_alive){
+                    close(socket_local);
+                    socket_local = 0;
+                    delete(req_resp);
+                    r ="";
+                    request = "";
+            }else
+                std::chrono::time_point<std::chrono::system_clock> start = std::chrono::system_clock::now();
+            }
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }

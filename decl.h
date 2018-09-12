@@ -44,7 +44,7 @@
 #if defined(WIN32)
     #define __FILE_PATH "C:\\Users\\Martin\\Documents\\temporaire"
 #elif defined(linux)
-    #define __FILE_PATH "/home/moonnz/temporaire/"
+    #define __FILE_PATH "/home/moonnz/temporaire"
 #endif
 struct container{
     std::vector<std::thread> thread_list;

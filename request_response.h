@@ -14,13 +14,13 @@ public:
     int retrieve_file_data(std::string);
     inline bool file_exist(std::string);
     std::string get_response();
+    bool keep_alive = false;
 private:
     std::vector<std::string> lines;
     std::string file_content = "";
     std::string head = "";
     int error = 0;
     int file_size = 0;
-
 };
 
 
