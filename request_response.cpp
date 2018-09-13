@@ -13,7 +13,11 @@ request_response::request_response(std::string request) {
         if(found != std::string::npos){
             std::transform(it->begin(), it->end(), it->begin(), ::tolower);
             if(it->substr(12, it->length()) == " keep-alive" && error != 5 && error != 10 ){
+                std::cout << "keep_alive find" << std::endl;
                 keep_alive = true;
+            }else if(it->substr(12, it->length()) == " close" && error != 5 && error != 10 ){
+                std::cout << "close find" << std::endl;
+                keep_alive = false;
             }
         }
     }
@@ -27,6 +31,8 @@ request_response::request_response(std::string request) {
             head.append("\r\nContent-type: image/x-icon\r\n");
         else if(get_extension() == ".css")
             head.append("\r\nContent-type: text/css\r\n");
+        else
+            head.append("\r\n");
         if(keep_alive){
             head.append("Connection: Keep-Alive\r\nKeep-Alive: timeout=1, max=10\r\n\r\n");
         }else{
@@ -44,6 +50,7 @@ std::string request_response::get_response() {
     if (error == 0){
         a.append(head.c_str());
         a.append(file_content.c_str());
+        std::cout << "sended with file_content: " << std::endl << file_content << std::endl;
     }else{
         a.append(head.c_str());
     }
@@ -72,10 +79,11 @@ std::string request_response::get_filename(){
     int pos_slash = lines[0].find("/");
     int pos_space = lines[0].find_last_of(" ");
     file_name = lines[0].substr(pos_slash, pos_space-pos_slash);
-    if(file_name == "/")
+    if(file_name == "/"){
         return "index.html";
-    else
+    }else{
         return file_name.substr(1, file_name.length());
+    }
 }
 
 std::string request_response::get_extension(){
@@ -84,6 +92,20 @@ std::string request_response::get_extension(){
     int pos_space = lines[0].find_last_of(" ");
     extension = lines[0].substr(pos_dot, pos_space-pos_dot);
     return extension;
+}
+
+int request_response::get_response_size() {
+    return head.length()+file_size;
+}
+
+
+void request_response::get_response_buf(char * buf_extern) {
+    for(int i = 0; i < head.length(); i++){
+        buf_extern[i] = head[i];
+    }
+    for(int i = head.length(); i< get_response_size(); i++){
+        buf_extern[i] = file_content_buf[i-head.length()];
+    }
 }
 
 int request_response::retrieve_file_data(std::string _filename){
@@ -101,10 +123,9 @@ int request_response::retrieve_file_data(std::string _filename){
             file_size = file.tellg();
             file.seekg(0, file.beg);
             std::cout << file_size << std::endl;
-            char * buf = new char[file_size];
-            file.read(buf, file_size);
+            file_content_buf = new char[file_size];
+            file.read(file_content_buf, file_size);
             file.close();
-            file_content = std::string(buf);
             return 0;
         } else{
             std::cout << "error for: " << filename << std::endl;

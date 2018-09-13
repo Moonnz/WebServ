@@ -14,12 +14,15 @@ public:
     int retrieve_file_data(std::string);
     inline bool file_exist(std::string);
     std::string get_response();
+    int get_response_size();
+    void get_response_buf(char*);
     std::string get_extension();
     bool keep_alive = false;
     int error = 0;
 private:
     std::vector<std::string> lines;
     std::string file_content = "";
+    char * file_content_buf;
     std::string head = "";
     int file_size = 0;
 };
