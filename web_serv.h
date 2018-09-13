@@ -21,11 +21,15 @@ class web_serv {
         std::thread *serv_thread;
 
         SOCKADDR_IN sin, csin;
-        SOCKET sock;
-        socklen_t recsize;
+        SOCKET sock, csock;
+        socklen_t recsize, crecsize;
+        int optvalYes;
+        int sock_err;
 
         static void thread_core_function(void *);
         static void serv_core_function(void *, void *);
+        static void signal_handler(int);
 };
+
 
 #endif //THREADTEST_WEB_SERV_H

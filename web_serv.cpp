@@ -29,6 +29,7 @@ web_serv::web_serv() {
 
     this->a.stop = false;
     recsize = sizeof(sin);
+    crecsize = sizeof(csin);
 
     sock = socket(AF_INET, SOCK_STREAM, 0);
     sin.sin_addr.s_addr = htonl(INADDR_ANY);
@@ -127,6 +128,8 @@ void web_serv::thread_core_function(void *args){
     bool close_for_timeout = false;
     int rec;
 
+    char crlf[4] = {13,10,13,10};
+
     while(1){ //Je lance la boucle infini
         memset(buffer_local, 0, __BUFFER_SIZE);
         if(!keep_alive){
@@ -176,26 +179,23 @@ void web_serv::thread_core_function(void *args){
                 if(boolean)
                     break;
             }
+            std::string r;
             if(rec > 0){
                 std::cout << "nb: " << nb << std::endl;
                 req_resp = new request_response(request);
-                 char * buf= new char[req_resp->get_response_size()];
-                 req_resp->get_response_buf(buf);
-                if(send(socket_local, buf, req_resp->get_response_size(), 0) == -1){
+                 r = req_resp->get_response();
+                if(send(socket_local, r.c_str(), r.length(), 0) == -1){
                     #if defined(WIN32)
                     std::cout << WSAGetLastError() << std::endl;
                     #elif defined(linux)
                     std::cout << errno << std::endl;
                     #endif
                 }
-                keep_alive = req_resp->keep_alive;
-                delete(buf);
-                delete(req_resp);
             }
             if(keep_alive){
                 std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
                 long int diff = std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count();
-                if(diff > 500000000)
+                if(diff > 1000000000)
                     close_for_timeout = true;
             }
             if(close_for_timeout){
@@ -203,19 +203,20 @@ void web_serv::thread_core_function(void *args){
                 close(socket_local);
                 socket_local = 0;
                 delete(req_resp);
+                r ="";
                 std::cout << "request reset" << std::endl;
                 request = "";
                 keep_alive = false;
                 close_for_timeout = false;
             }else{
-                if(!keep_alive || (req_resp != NULL && req_resp->error > 0)){
+                if(!keep_alive || req_resp->error > 0){
                     keep_alive = req_resp->keep_alive;
-                    if(!keep_alive || (req_resp != NULL && req_resp->error > 0)){
+                    if(!keep_alive || req_resp->error > 0){
                             close(socket_local);
                             socket_local = 0;
                             delete(req_resp);
-                            std::cout << "when reset keep alive: " << keep_alive << std::endl;
-                            std::cout << "request reset DD" << std::endl;
+                            r ="";
+                            std::cout << "request reset" << std::endl;
                             request = "";
                             keep_alive = false;
                             close_for_timeout = false;
