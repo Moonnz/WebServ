@@ -6,7 +6,7 @@
 
 #IncludeRegexTransform: 
 
-C:/Users/Martin/CLionProjects/WebServ/decl.h
+/root/CLionProjects/ThreadTest/decl.h
 thread
 -
 mutex
@@ -50,11 +50,27 @@ unistd.h
 csignal
 -
 
-C:/Users/Martin/CLionProjects/WebServ/request_response.cpp
-request_response.h
-C:/Users/Martin/CLionProjects/WebServ/request_response.h
+/root/CLionProjects/ThreadTest/main.cpp
+unistd.h
+-
+web_serv.h
+/root/CLionProjects/ThreadTest/web_serv.h
 
-C:/Users/Martin/CLionProjects/WebServ/request_response.h
+/root/CLionProjects/ThreadTest/request_response.cpp
+request_response.h
+/root/CLionProjects/ThreadTest/request_response.h
+
+/root/CLionProjects/ThreadTest/request_response.h
 decl.h
-C:/Users/Martin/CLionProjects/WebServ/decl.h
+/root/CLionProjects/ThreadTest/decl.h
+
+/root/CLionProjects/ThreadTest/web_serv.cpp
+web_serv.h
+/root/CLionProjects/ThreadTest/web_serv.h
+
+/root/CLionProjects/ThreadTest/web_serv.h
+decl.h
+/root/CLionProjects/ThreadTest/decl.h
+request_response.h
+/root/CLionProjects/ThreadTest/request_response.h
 

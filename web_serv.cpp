@@ -183,14 +183,18 @@ void web_serv::thread_core_function(void *args){
             if(rec > 0){
                 std::cout << "nb: " << nb << std::endl;
                 req_resp = new request_response(request);
-                 r = req_resp->get_response();
-                if(send(socket_local, r.c_str(), r.length(), 0) == -1){
+                char * buf= new char[req_resp->get_response_size()];
+                std::cout << "buf size: " << req_resp->get_response_size() << std::endl;
+                req_resp->get_response_buf(buf);
+                if(send(socket_local, buf, req_resp->get_response_size(), 0) == -1){
                     #if defined(WIN32)
                     std::cout << WSAGetLastError() << std::endl;
                     #elif defined(linux)
                     std::cout << errno << std::endl;
                     #endif
                 }
+                keep_alive = req_resp->keep_alive;
+                delete(buf);
             }
             if(keep_alive){
                 std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
@@ -209,14 +213,14 @@ void web_serv::thread_core_function(void *args){
                 keep_alive = false;
                 close_for_timeout = false;
             }else{
-                if(!keep_alive || req_resp->error > 0){
+                if(!keep_alive || (req_resp != NULL && req_resp->error > 0)){
                     keep_alive = req_resp->keep_alive;
-                    if(!keep_alive || req_resp->error > 0){
+                    if(!keep_alive || (req_resp != NULL && req_resp->error > 0)){
                             close(socket_local);
                             socket_local = 0;
                             delete(req_resp);
                             r ="";
-                            std::cout << "request reset" << std::endl;
+                            std::cout << "request reset DD" << std::endl;
                             request = "";
                             keep_alive = false;
                             close_for_timeout = false;
