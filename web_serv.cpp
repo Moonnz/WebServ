@@ -5,6 +5,7 @@
 #include "web_serv.h"
 
 web_serv::~web_serv() {
+    std::cout << "destructor call" << std::endl;
     stop();
     #if defined(WIN32)
         WSACleanup();
@@ -12,6 +13,7 @@ web_serv::~web_serv() {
 }
 
 int web_serv::stop(){
+    std::cout << "stop call" << std::endl;
     this->b.stop_serv = true;
     while(b.stopped != true){        
     }
@@ -122,7 +124,7 @@ void web_serv::thread_core_function(void *args){
     memset(buffer_local, 0, __BUFFER_SIZE);
     std::string request;
     bool boolean = false;
-    request_response *req_resp;
+    request_response *req_resp = NULL;
     std::chrono::time_point<std::chrono::system_clock> start;
     bool keep_alive = false;
     bool close_for_timeout = false;
@@ -183,6 +185,7 @@ void web_serv::thread_core_function(void *args){
             if(rec > 0){
                 std::cout << "nb: " << nb << std::endl;
                 req_resp = new request_response(request);
+                request = "";
                 char * buf= new char[req_resp->get_response_size()];
                 std::cout << "buf size: " << req_resp->get_response_size() << std::endl;
                 req_resp->get_response_buf(buf);
