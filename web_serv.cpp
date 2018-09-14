@@ -126,6 +126,7 @@ void web_serv::thread_core_function(void *args){
     bool boolean = false;
     request_response *req_resp = NULL;
     std::chrono::time_point<std::chrono::system_clock> start;
+    std::chrono::time_point<std::chrono::system_clock> start_deux;
     bool keep_alive = false;
     bool close_for_timeout = false;
     int rec;
@@ -196,17 +197,25 @@ void web_serv::thread_core_function(void *args){
                     std::cout << errno << std::endl;
                     #endif
                 }
-                keep_alive = req_resp->keep_alive;
                 delete(buf);
+                start_deux = std::chrono::system_clock::now();
             }
+            
+            if(req_resp->keep_alive && !keep_alive){
+                        start = std::chrono::system_clock::now();
+            }
+            keep_alive = req_resp->keep_alive;
             if(keep_alive){
                 std::chrono::time_point<std::chrono::system_clock> end = std::chrono::system_clock::now();
                 long int diff = std::chrono::duration_cast<std::chrono::nanoseconds>(end-start).count();
                 if(diff > 1000000000)
                     close_for_timeout = true;
             }
+            
             if(close_for_timeout){
-                std::cout << "close for timeout" << std::endl;
+                std::chrono::time_point<std::chrono::system_clock> end_deux = std::chrono::system_clock::now();
+                long int diff = std::chrono::duration_cast<std::chrono::nanoseconds>(end_deux-start_deux).count();
+                std::cout << "close for timeout with: " << diff << std::endl;
                 close(socket_local);
                 socket_local = 0;
                 delete(req_resp);
